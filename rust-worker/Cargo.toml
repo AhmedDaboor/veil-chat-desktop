@@ -1,0 +1,16 @@
+[package]
+name = "veil-chat-ipc-worker"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+matrix-sdk = { version = "=0.19.1", default-features = false, features = ["automatic-room-key-forwarding", "e2e-encryption", "rustls-aws-lc-rs", "socks", "sqlite"] }
+getrandom = "=0.4.3"
+hmac = "=0.13.0"
+reqwest = { version = "=0.13.5", default-features = false, features = ["rustls", "socks"] }
+serde = "=1.0.229"
+serde_json = "=1.0.151"
+sha2 = "=0.11.1"
+tokio = { version = "=1.53.1", features = ["macros", "rt-multi-thread", "time", "sync", "process", "net", "io-util", "fs"] }
+url = "=2.5.8"

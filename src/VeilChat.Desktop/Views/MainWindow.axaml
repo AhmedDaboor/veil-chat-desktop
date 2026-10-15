@@ -1,0 +1,54 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="using:VeilChat.Desktop.Core.ViewModels"
+        xmlns:views="using:VeilChat.Desktop.Views"
+        x:Class="VeilChat.Desktop.Views.MainWindow"
+        x:DataType="core:MainWindowViewModel"
+        Title="Veil Chat"
+        Width="1120"
+        Height="760"
+        MinWidth="860"
+        MinHeight="600">
+  <Window.DataTemplates>
+    <DataTemplate DataType="{x:Type core:ChatsPageViewModel}">
+      <views:ChatsPageView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type core:SettingsPageViewModel}">
+      <views:SettingsPageView />
+    </DataTemplate>
+  </Window.DataTemplates>
+
+  <Grid RowDefinitions="Auto,*" Background="#101419">
+      <Border Grid.Row="0" Background="#202830" Padding="18,12">
+      <StackPanel Spacing="3">
+        <TextBlock Text="VEIL CHAT · PRIVACY REQUIRED" FontSize="12" FontWeight="Bold" Foreground="#A8D8C3" />
+        <TextBlock Text="Matrix requests require supervised Tor; only SDK-verified encrypted direct text rooms can send." Foreground="#DDE5E9" />
+      </StackPanel>
+    </Border>
+
+    <Grid Grid.Row="1" ColumnDefinitions="230,*">
+      <Border Grid.Column="0" Background="#171D23" Padding="20">
+        <DockPanel LastChildFill="True">
+          <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,28">
+            <TextBlock Text="VEIL" FontSize="23" FontWeight="Bold" Foreground="#F0F4F6" />
+            <TextBlock Text="CHAT · DESKTOP" FontSize="10" Foreground="#92A0AA" />
+          </StackPanel>
+
+          <StackPanel DockPanel.Dock="Bottom" Spacing="6" Margin="0,24,0,0">
+            <TextBlock Text="PRIVACY STATUS" FontSize="10" Foreground="#92A0AA" />
+            <TextBlock Text="Security gates active" FontWeight="SemiBold" Foreground="#DDE5E9" />
+            <TextBlock Text="Worker connection alone does not prove Tor routing or end-to-end encryption." TextWrapping="Wrap" FontSize="12" Foreground="#AEB9C0" />
+          </StackPanel>
+
+          <StackPanel Spacing="8">
+            <TextBlock Text="WORKSPACE" FontSize="10" Foreground="#92A0AA" Margin="0,0,0,4" />
+            <Button Content="Chats" Command="{Binding ShowChatsCommand}" HorizontalContentAlignment="Left" Padding="14,11" />
+            <Button Content="Privacy &amp; settings" Command="{Binding ShowSettingsCommand}" HorizontalContentAlignment="Left" Padding="14,11" />
+          </StackPanel>
+        </DockPanel>
+      </Border>
+
+      <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
+    </Grid>
+  </Grid>
+</Window>

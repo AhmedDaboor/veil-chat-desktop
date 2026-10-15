@@ -1,0 +1,75 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="using:VeilChat.Desktop.Core.ViewModels"
+             x:Class="VeilChat.Desktop.Views.SettingsPageView"
+             x:DataType="core:SettingsPageViewModel">
+  <ScrollViewer VerticalScrollBarVisibility="Auto" Background="#101419">
+    <StackPanel Spacing="18" Margin="34,30" MaxWidth="860" HorizontalAlignment="Left">
+      <StackPanel Spacing="6" Margin="0,0,0,4">
+        <TextBlock Text="Privacy &amp; settings" FontSize="27" FontWeight="SemiBold" Foreground="#F0F4F6" />
+        <TextBlock Text="Only encrypted one-to-one text is enabled. Matrix requests require a supervised Tor process; direct-network fallback is disabled." TextWrapping="Wrap" Foreground="#AEB9C0" />
+      </StackPanel>
+
+      <Border Background="#202830" CornerRadius="12" Padding="20">
+        <StackPanel Spacing="9">
+          <TextBlock Text="Matrix account" FontSize="16" FontWeight="SemiBold" Foreground="#F0F4F6" />
+          <TextBlock Text="{Binding AccountState}" TextWrapping="Wrap" Foreground="#C7D0D5" />
+          <TextBox Text="{Binding Homeserver, Mode=TwoWay}" PlaceholderText="https://matrix.example" />
+          <TextBox Text="{Binding Username, Mode=TwoWay}" PlaceholderText="Username or localpart" />
+          <TextBox Text="{Binding Password, Mode=TwoWay}" PlaceholderText="Password" PasswordChar="●" />
+          <WrapPanel Orientation="Horizontal">
+            <Button Content="Sign in" Command="{Binding LoginCommand}" Margin="0,0,8,8" />
+            <Button Content="Restore saved session" Command="{Binding RestoreSessionCommand}" IsEnabled="{Binding HasSavedSession}" Margin="0,0,8,8" />
+            <Button Content="Sign out" Command="{Binding LogoutCommand}" IsEnabled="{Binding IsAuthenticated}" Margin="0,0,8,8" />
+            <Button Content="Forget local session" Command="{Binding ForgetLocalSessionCommand}" IsEnabled="{Binding HasSavedSession}" Margin="0,0,8,8" />
+          </WrapPanel>
+          <TextBlock Text="{Binding AccountError}" TextWrapping="Wrap" Foreground="#FFD38A" />
+          <TextBlock Text="Passwords and SDK session data are kept out of logs. Session secrets use Windows DPAPI or Linux Secret Service; login is unavailable if secure storage fails." TextWrapping="Wrap" FontSize="12" Foreground="#AEB9C0" />
+          <TextBlock Text="Forgetting local data does not necessarily revoke a server-side session." TextWrapping="Wrap" FontSize="12" Foreground="#FFD38A" />
+        </StackPanel>
+      </Border>
+
+      <Border Background="#202830" CornerRadius="12" Padding="20">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Worker connection" FontSize="16" FontWeight="SemiBold" Foreground="#F0F4F6" />
+          <TextBlock Text="{Binding WorkerConnectionState}" TextWrapping="Wrap" Foreground="#C7D0D5" />
+          <TextBlock Text="{Binding WorkerDetails}" TextWrapping="Wrap" Foreground="#AEB9C0" />
+          <Button Content="Refresh worker status" Command="{Binding RefreshStatusCommand}" HorizontalAlignment="Left" Padding="14,8" />
+        </StackPanel>
+      </Border>
+      <Border Background="#202830" CornerRadius="12" Padding="20">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Worker privacy response" FontSize="16" FontWeight="SemiBold" Foreground="#F0F4F6" />
+          <TextBlock Text="State" FontSize="12" Foreground="#92A0AA" />
+          <TextBlock Text="{Binding WorkerPrivacyState}" TextWrapping="Wrap" Foreground="#C7D0D5" />
+          <TextBlock Text="Worker network access" FontSize="12" Foreground="#92A0AA" />
+          <TextBlock Text="{Binding WorkerNetworkAccess}" TextWrapping="Wrap" Foreground="#C7D0D5" />
+        </StackPanel>
+      </Border>
+      <Border Background="#202830" CornerRadius="12" Padding="20">
+        <StackPanel Spacing="6">
+          <TextBlock Text="End-to-end encryption" FontSize="16" FontWeight="SemiBold" Foreground="#F0F4F6" />
+          <TextBlock Text="{Binding EncryptionState}" TextWrapping="Wrap" Foreground="#C7D0D5" />
+        </StackPanel>
+      </Border>
+      <Border Background="#202830" CornerRadius="12" Padding="20">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Tor routing" FontSize="16" FontWeight="SemiBold" Foreground="#F0F4F6" />
+          <TextBlock Text="{Binding TorState}" TextWrapping="Wrap" Foreground="#C7D0D5" />
+        </StackPanel>
+      </Border>
+      <Border Background="#202830" CornerRadius="12" Padding="20">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Matrix integration" FontSize="16" FontWeight="SemiBold" Foreground="#F0F4F6" />
+          <TextBlock Text="{Binding MatrixState}" TextWrapping="Wrap" Foreground="#C7D0D5" />
+        </StackPanel>
+      </Border>
+      <Border Background="#392A14" CornerRadius="12" Padding="20">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Unresolved dependency advisory" FontSize="16" FontWeight="SemiBold" Foreground="#FFD38A" />
+          <TextBlock Text="{Binding AdvisoryState}" TextWrapping="Wrap" Foreground="#F2DDB9" />
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

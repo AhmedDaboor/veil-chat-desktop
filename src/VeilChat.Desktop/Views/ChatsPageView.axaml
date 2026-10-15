@@ -1,0 +1,131 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="using:VeilChat.Desktop.Core.ViewModels"
+             x:Class="VeilChat.Desktop.Views.ChatsPageView"
+             x:DataType="core:ChatsPageViewModel">
+  <Grid Background="#101419">
+    <Grid IsVisible="{Binding IsMockMode}" ColumnDefinitions="300,*">
+      <Border Grid.Column="0" BorderBrush="#273039" BorderThickness="0,0,1,0" Padding="22">
+        <DockPanel LastChildFill="True">
+          <StackPanel DockPanel.Dock="Top" Spacing="7" Margin="0,0,0,20">
+            <TextBlock Text="Chats" FontSize="26" FontWeight="SemiBold" Foreground="#F0F4F6" />
+            <TextBlock Text="Local sample content · sending disabled until a session and encrypted room are verified." TextWrapping="Wrap" Foreground="#AEB9C0" />
+          </StackPanel>
+          <ListBox ItemsSource="{Binding Conversations}" SelectedItem="{Binding ActiveConversation, Mode=TwoWay}" Background="Transparent" BorderThickness="0">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="core:ChatConversationItem">
+                <Border Background="#202830" CornerRadius="12" Padding="14" Margin="0,0,0,10">
+                  <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" Foreground="#F0F4F6" />
+                    <TextBlock Text="{Binding Preview}" TextWrapping="Wrap" FontSize="12" Foreground="#AEB9C0" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+      </Border>
+      <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto" Margin="26,22">
+        <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,18">
+          <TextBlock Text="{Binding ActiveConversation.DisplayName}" FontSize="20" FontWeight="SemiBold" Foreground="#F0F4F6" />
+          <TextBlock Text="Mock content · not sent or received" FontSize="12" Foreground="#92A0AA" />
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+          <ItemsControl ItemsSource="{Binding Messages}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="core:ChatMessageItem">
+                <Border Background="#202830" CornerRadius="12" Padding="16" Margin="0,0,0,12" MaxWidth="620" HorizontalAlignment="Left">
+                  <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding Speaker}" FontWeight="SemiBold" Foreground="#A8D8C3" />
+                    <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Foreground="#E1E7EA" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+        <TextBox Grid.Row="2" IsEnabled="False" PlaceholderText="Sending is disabled until an encrypted session is active" Margin="0,16,0,0" />
+      </Grid>
+    </Grid>
+
+    <Grid IsVisible="{Binding IsAuthenticated}" ColumnDefinitions="320,*">
+      <Border Grid.Column="0" BorderBrush="#273039" BorderThickness="0,0,1,0" Padding="18">
+        <DockPanel LastChildFill="True">
+          <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,14">
+            <TextBlock Text="Encrypted chats" FontSize="24" FontWeight="SemiBold" Foreground="#F0F4F6" />
+            <Button Content="Refresh rooms" Command="{Binding RefreshRoomsCommand}" HorizontalAlignment="Left" />
+            <TextBox Text="{Binding DirectUserId}" PlaceholderText="@user:matrix.example" />
+            <Button Content="Create encrypted direct chat" Command="{Binding CreateDirectRoomCommand}" HorizontalAlignment="Left" />
+            <TextBlock Text="Invitations" FontWeight="SemiBold" Foreground="#F0F4F6" Margin="0,8,0,0" />
+            <ListBox ItemsSource="{Binding Invites}" SelectedItem="{Binding ActiveInvite, Mode=TwoWay}"
+                     MaxHeight="170" Background="Transparent" BorderThickness="0">
+              <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="core:ChatInviteItem">
+                  <Border Background="#202830" CornerRadius="8" Padding="10" Margin="0,0,0,6">
+                    <StackPanel Spacing="4">
+                      <TextBlock Text="{Binding RoomId}" FontSize="11" TextWrapping="Wrap" Foreground="#C7D0D5" />
+                      <TextBlock Text="{Binding SecurityStatus}" FontSize="11" Foreground="#A8D8C3" />
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Content="Accept encrypted direct invite" Command="{Binding AcceptInviteCommand}"
+                    IsEnabled="{Binding CanAcceptInvite}" HorizontalAlignment="Left" />
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" FontSize="12" Foreground="#AEB9C0" />
+          </StackPanel>
+          <ListBox ItemsSource="{Binding Conversations}" SelectedItem="{Binding ActiveConversation, Mode=TwoWay}" Background="Transparent" BorderThickness="0">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="core:ChatConversationItem">
+                <Border Background="#202830" CornerRadius="10" Padding="12" Margin="0,0,0,8">
+                  <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding DisplayName}" FontSize="12" TextWrapping="Wrap" Foreground="#F0F4F6" />
+                    <TextBlock Text="Matrix SDK reports room encrypted" FontSize="11" Foreground="#A8D8C3" />
+                    <TextBlock Text="{Binding PeerIdentityStatusText}" FontSize="11" TextWrapping="Wrap" Foreground="#E3C27A" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+      </Border>
+      <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto" Margin="24,20">
+        <StackPanel Grid.Row="0" Spacing="5" Margin="0,0,0,16">
+          <TextBlock Text="{Binding ActiveConversation.DisplayName}" FontSize="19" FontWeight="SemiBold" Foreground="#F0F4F6" />
+          <TextBlock Text="Messages load only after the SDK reports room encryption and the worker confirms Tor is bootstrapped. Room encryption and peer identity are separate." FontSize="12" TextWrapping="Wrap" Foreground="#AEB9C0" />
+          <TextBlock Text="{Binding PeerVerificationMessage}" FontSize="12" TextWrapping="Wrap" Foreground="#E3C27A" />
+          <TextBlock Text="{Binding PeerVerificationSas}" IsVisible="{Binding IsPeerVerificationSasVisible}"
+                     FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Foreground="#F0F4F6" />
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="Request peer verification" Command="{Binding StartPeerVerificationCommand}"
+                    IsEnabled="{Binding CanStartPeerVerification}" />
+            <Button Content="Refresh verification" Command="{Binding RefreshPeerVerificationCommand}"
+                    IsEnabled="{Binding CanRefreshPeerVerification}" />
+            <Button Content="The SAS matches" Command="{Binding ConfirmPeerVerificationCommand}"
+                    IsEnabled="{Binding CanConfirmPeerVerification}" />
+            <Button Content="Cancel" Command="{Binding CancelPeerVerificationCommand}"
+                    IsEnabled="{Binding CanCancelPeerVerification}" />
+          </StackPanel>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+          <ItemsControl ItemsSource="{Binding Messages}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="core:ChatMessageItem">
+                <Border Background="#202830" CornerRadius="12" Padding="15" Margin="0,0,0,10" MaxWidth="680" HorizontalAlignment="Left">
+                  <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding Speaker}" FontWeight="SemiBold" Foreground="#A8D8C3" />
+                    <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Foreground="#E1E7EA" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10" Margin="0,14,0,0">
+          <TextBox Text="{Binding DraftText, Mode=TwoWay}" IsEnabled="{Binding CanSend}" PlaceholderText="Encrypted text message" VerticalContentAlignment="Center" />
+          <Button Grid.Column="1" Content="Send" Command="{Binding SendMessageCommand}" IsEnabled="{Binding CanSend}" Padding="20,9" />
+        </Grid>
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>
